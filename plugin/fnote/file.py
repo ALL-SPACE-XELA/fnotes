@@ -23,7 +23,7 @@ class NFile:
         
         if not os.path.exists(self.__full_path):
             with open(self.__full_path, "a") as handle:
-                handle.write("# Notes for: {}".format(os.path.basename(file_name)))
+                handle.write("# Notes for: {}\n\n".format(os.path.basename(file_name)))
 
     def get_lines(self) -> list:
         with open(self.__full_path, "r") as handle:
