@@ -27,6 +27,9 @@ DEBUG_INFO = """
 
 def check_has_fnote(file: str):
     if NFile.check_file_exists(file):
+        # this places an "NF" in your signcolumn indicating you have 
+        # a note on such file... XXX: work out why only the third sign
+        # seems to be showing...
         vim.command("sign define NFILE text=NF texthl=Search")
         vim.command('exe ":silent :sign place 2 line=1 name=NFILE file=" . expand("%:p")')
         vim.command('exe ":silent :sign place 2 line=2 name=NFILE file=" . expand("%:p")')
