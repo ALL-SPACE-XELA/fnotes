@@ -1,5 +1,20 @@
 import os
 import hashlib
+from datetime import datetime
+from enum import Enum
+
+
+class TimestampType(Enum):
+    Created = 1
+    Edited = 2
+
+def add_timestamp(timestamp_type: TimestampType):
+    date_today = datetime.now().strftime("%d/%m/%Y")
+    match timestamp_type:
+        case TimestampType.Created:
+            return """<!---Created: {} -->\n""".format(date_today)
+        case TimestampType.Edited:
+            return """<!---Edited: {} -->""".format(date_today)
 
 class NFile:
 
@@ -24,12 +39,19 @@ class NFile:
         if not os.path.exists(self.__full_path):
             with open(self.__full_path, "a") as handle:
                 handle.write("# Notes for: {}\n\n".format(os.path.basename(file_name)))
+                handle.write(add_timestamp(TimestampType.Created))
+                handle.write(add_timestamp(TimestampType.Edited))
 
     def get_lines(self) -> list:
         with open(self.__full_path, "r") as handle:
             self.__data = handle.read()
 
-        return self.__data.split("\n")
+        lines = self.__data.split("\n")
+        if len(lines) > 5:
+            # 5 because I'm assuming a title, created and edited timestamp
+            # and a couple lines of notes
+            lines.append(add_timestamp(TimestampType.Edited))
+        return lines
 
     def dump(self, lines: list[str]):
         lines = ['{}\n'.format(x) for x in lines if "Debug" not in x]
@@ -38,7 +60,9 @@ class NFile:
         if lines[-1] == "\n":
             lines = lines[:-2]
 
-        print("LINESS TO WRITE", lines)
+        # if we did not make any changes (last line is the "edited line"), we revert it
+        if add_timestamp(TimestampType.Edited) in lines[-1]:
+            lines = lines[:-1]
 
         with open(self.__full_path, "w") as handle:
             handle.writelines(lines)
