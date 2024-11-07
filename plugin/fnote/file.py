@@ -2,6 +2,9 @@ import os
 import hashlib
 from datetime import datetime
 from enum import Enum
+import re
+
+NEW_LINE_RULE = re.compile(r'(\n)\1{3,}')
 
 
 class TimestampType(Enum):
@@ -56,9 +59,9 @@ class NFile:
     def dump(self, lines: list[str]):
         lines = ['{}\n'.format(x) for x in lines if "Debug" not in x]
 
-        # dirty
-        if lines[-1] == "\n":
-            lines = lines[:-2]
+        # as a rule, I will not allow more than 2 consecutive new lines
+        for line in lines:
+            line = re.sub(NEW_LINE_RULE, '\n', line).strip()
 
         # if we did not make any changes (last line is the "edited line"), we revert it
         if add_timestamp(TimestampType.Edited) in lines[-1]:
