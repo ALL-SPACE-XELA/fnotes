@@ -59,9 +59,7 @@ class NFile:
             self.__data = handle.read()
 
         lines = self.__data.split("\n")
-        if len(lines) > 5:
-            # 5 because I'm assuming a title, created and edited timestamp
-            # and a couple lines of notes
+        if (add_timestamp(TimestampType.Edited) not in lines):
             lines.append(add_timestamp(TimestampType.Edited))
         return lines
 
