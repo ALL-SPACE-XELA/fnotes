@@ -74,8 +74,8 @@ class NFile:
         lines = lines.split("\n")
 
         # if we did not make any changes (last line is the "edited line"), we revert it
-        if add_timestamp(TimestampType.Edited) in lines[-2]:
-            lines = lines[:-2]
+        if add_timestamp(TimestampType.Edited) in lines[-1]:
+            lines = lines[:-1]
         lines = "\n".join(lines)
         return lines
 
