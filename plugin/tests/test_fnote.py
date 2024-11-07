@@ -1,4 +1,3 @@
-
 import pytest
 from fnote.file import NFile
 import shutil
@@ -21,3 +20,30 @@ def test_get_root_dir():
     nfile = NFile("tmpfile", ROOT_DIR)
     assert  nfile.get_root_dir() == ROOT_DIR
 
+def test_process_lines():
+    nfile = NFile("tmpfile", ROOT_DIR)
+    inputs = """a
+b
+
+
+
+
+
+c
+
+
+
+
+
+
+d
+
+    """.split("\n")
+    expected = """a
+b
+
+c
+
+d"""
+    print(nfile.process(inputs))
+    assert nfile.process(inputs) == expected

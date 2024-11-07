@@ -65,19 +65,25 @@ class NFile:
             lines.append(add_timestamp(TimestampType.Edited))
         return lines
 
-    def dump(self, lines: list[str]):
+    def process(self, lines: list[str]) -> str:
         lines = ['{}\n'.format(x) for x in lines if "Debug" not in x]
 
         # as a rule, I will not allow more than 2 consecutive new lines
-        for line in lines:
-            line = re.sub(NEW_LINE_RULE, '\n', line).strip()
+        lines = ''.join(lines)
+        lines = re.sub(NEW_LINE_RULE, '\n\n', lines).strip()
+        lines = lines.split("\n")
 
         # if we did not make any changes (last line is the "edited line"), we revert it
-        if add_timestamp(TimestampType.Edited) in lines[-1]:
-            lines = lines[:-1]
+        if add_timestamp(TimestampType.Edited) in lines[-2]:
+            lines = lines[:-2]
+        lines = "\n".join(lines)
+        return lines
 
+
+    def dump(self, lines: str):
+        lines = self.process(lines)
         with open(self.__full_path, "w") as handle:
-            handle.writelines(lines)
+            handle.write(lines)
 
     
     @classmethod
