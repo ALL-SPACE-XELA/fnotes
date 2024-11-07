@@ -4,6 +4,8 @@ from datetime import datetime
 from enum import Enum
 import re
 
+from typing import Optional
+
 NEW_LINE_RULE = re.compile(r'(\n)\1{3,}')
 
 
@@ -24,11 +26,18 @@ class NFile:
     # .local/share/nvim
     __ROOT_DIR = os.path.expanduser("~/.local/share/nvim/fnote-vim")
 
+    def get_root_dir(self):
+        return self.__ROOT_DIR
+
     def _create_root_dir(self):
         if not os.path.exists(self.__ROOT_DIR):
             os.makedirs(self.__ROOT_DIR)
 
-    def __init__(self, file_name: str):
+    def __init__(self, file_name: str, root_dir: Optional[str] = None):
+        if root_dir:
+            # mainly for testing purposes...
+            self.__ROOT_DIR = root_dir
+
         self._create_root_dir()
 
         self.__file_name = file_name
