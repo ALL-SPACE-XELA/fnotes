@@ -55,6 +55,8 @@ def main(is_buffer_open: bool, window_handle: str, buffer_handle: str, file: str
 
     if is_buffer_open:
         # we close
+        # on buffer close we set virtualedit back to default ("")
+        vim.command('set virtualedit=""')
         if window_handle in vim.api.list_wins():
             lines = vim.api.buf_get_lines(buffer_handle, 0, 100, False)
             vim.api.win_close(window_handle, True)
@@ -67,6 +69,8 @@ def main(is_buffer_open: bool, window_handle: str, buffer_handle: str, file: str
             
 
     else:
+        # on buffer open we set virtual edit to "all"
+        vim.command("set virtualedit=all")
         buffer = vim.api.create_buf(False, True)
         vim.api.open_win(buffer, True, {'relative': 'win', 'width': 100, 'height': 40, 'col': 0,
                                         'row': 1, 'anchor': 'SW', 'style': 'minimal', 'border': 'single'})
