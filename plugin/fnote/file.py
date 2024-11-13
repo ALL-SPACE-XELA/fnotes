@@ -61,6 +61,10 @@ class NFile:
         lines = self.__data.split("\n")
         if (add_timestamp(TimestampType.Edited) not in lines):
             lines.append(add_timestamp(TimestampType.Edited))
+
+        # add a bunch of whitespace useful for drawing diagrams
+        for _ in range(50): 
+            lines.append("")
         return lines
 
     def process(self, lines: list[str]) -> str:
