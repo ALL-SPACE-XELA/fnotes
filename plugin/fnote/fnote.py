@@ -88,4 +88,6 @@ def main(is_buffer_open: bool, window_handle: str, buffer_handle: str, file: str
 
 
         vim.api.buf_set_lines(buffer, 0, 0, True, lines)
+        # after open we want to go to the top
+        vim.command(":1")
 
