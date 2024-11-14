@@ -60,6 +60,10 @@ class NFile:
             self.__data = handle.read()
 
         lines = self.__data.split("\n")
+        # patch add path if not there
+        if lines[1] != "<!--{}-->".format(self.__full_path):
+            lines = lines[:1] + ["<!--{}-->".format(self.__full_path)] + lines[1:]
+
         if (add_timestamp(TimestampType.Edited) not in lines):
             lines.append(add_timestamp(TimestampType.Edited))
 
