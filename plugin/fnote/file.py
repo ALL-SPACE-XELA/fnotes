@@ -50,7 +50,8 @@ class NFile:
         
         if not os.path.exists(self.__full_path):
             with open(self.__full_path, "a") as handle:
-                handle.write("# Notes for: {}\n\n".format(os.path.basename(file_name)))
+                handle.write("# Notes for: {}\n".format(os.path.basename(file_name)))
+                handle.write("<!--{}-->\n".format(self.__full_path))
                 handle.write(add_timestamp(TimestampType.Created))
                 handle.write(add_timestamp(TimestampType.Edited))
 
@@ -83,10 +84,11 @@ class NFile:
 
 
     def dump(self, lines: str):
+        # the second line of `lines` tells us where to dump to
+        path = lines[1].split("--")[1]
         lines = self.process(lines)
-        with open(self.__full_path, "w") as handle:
+        with open(path, "w") as handle:
             handle.write(lines)
-
     
     @classmethod
     def check_file_exists(cls, file_name: str) -> bool:

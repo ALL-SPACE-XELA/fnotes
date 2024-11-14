@@ -61,11 +61,6 @@ def main(is_buffer_open: bool, window_handle: str, buffer_handle: str, file: str
         if window_handle in vim.api.list_wins():
             lines = vim.api.buf_get_lines(buffer_handle, 0, 100, False)
             vim.api.win_close(window_handle, True)
-
-            # XXX: we close the buffer and get the current file
-            # (otherwise we write to empty buffer, filename = '')
-            current_file = vim.eval("resolve(expand('%:p'))")
-            nfile = NFile(current_file)
             nfile.dump(lines)
             
 
