@@ -49,10 +49,12 @@ def open_buffer(nfile, col=0, row=1):
     # on buffer open we set virtual edit to "all"
     vim.command("set virtualedit=all")
     vim.command('let g:indentLine_enabled = 0')
+    window_width = vim.current.window.width
+
     buffer = vim.api.create_buf(False, True)
     # row + 3 to allow 3 lines of space from cursor position and buffer window
     # col = 1 to disable it from swinging left-right
-    vim.api.open_win(buffer, True, {'relative': 'win', 'width': 100, 'height': 40, 'col': 1,
+    vim.api.open_win(buffer, True, {'relative': 'win', 'width': window_width, 'height': 40, 'col': 1,
                                     'row': row, 'style': 'minimal', 'border': 'single', 'fixed': False})
 
     vim.api.buf_set_option(buffer, 'modifiable', True)
