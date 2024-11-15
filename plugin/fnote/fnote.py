@@ -1,5 +1,7 @@
 import vim
 from .file import NFile
+from .screen_rotate import cyclewindows
+
 
 def is_buffer_open(func):
     def wrapper(*args, **kwargs):
