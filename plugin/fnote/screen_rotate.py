@@ -64,7 +64,6 @@ class WindowCycle:
     def save_window_view(self, window) -> dict:
         # FIXME: switch cursor to that window
         self.switch_to_window(window)
-        print(dir(vim.call))
         vim.command('let curView = winsaveview()') 
         return vim.eval('curView')
 
@@ -75,12 +74,9 @@ class WindowCycle:
         next_cycle = self.update_cycle_order()
         current_to_next = dict(zip(current_cycle, next_cycle))
 
-        print(current_to_next)
 
         for (window, to) in current_to_next.items():
-            print("HERE: ", to)
             self.move_window_to(window, to)
-        print("hidden")
 
 
 
