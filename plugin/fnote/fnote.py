@@ -56,8 +56,8 @@ def close_buffer(window_handle, buffer_handle, nfile):
     vim.command('set virtualedit=""')
     vim.command('let g:indentLine_enabled = 1')
     if window_handle in vim.api.list_wins():
-        # FIXME: we only save a max of 100 lines...
-        lines = vim.api.buf_get_lines(buffer_handle, 0, 100, False)
+        # FIXME: slightly better... increase to 1000
+        lines = vim.api.buf_get_lines(buffer_handle, 0, 1000, False)
         vim.api.win_close(window_handle, True)
         nfile.dump(lines)
 
