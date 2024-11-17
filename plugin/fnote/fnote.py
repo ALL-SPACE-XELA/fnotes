@@ -1,9 +1,21 @@
 import vim
 from .file import NFile
-from .screen_rotate import cyclewindows
+from .screen_rotate import WindowCycle
+
+FNOTE_BUFFER_STATUS = False;
+
+def cyclewindows():
+    """
+    we grab all available windows and create a cycle order
+
+    """
+    global FNOTE_BUFFER_STATUS
+    windowcycle = WindowCycle(FNOTE_BUFFER_STATUS)
+    windowcycle.cycle()
 
 
 def is_buffer_open(func):
+    global FNOTE_BUFFER_STATUS
     def wrapper(*args, **kwargs):
         func(wrapper.is_open, wrapper.window_handle, wrapper.buffer_handle, *args, **kwargs)
         if wrapper.is_open:
@@ -12,6 +24,8 @@ def is_buffer_open(func):
             wrapper.is_open = True
             wrapper.window_handle = vim.api.get_current_win()
             wrapper.buffer_handle = vim.api.get_current_buf()
+        global FNOTE_BUFFER_STATUS
+        FNOTE_BUFFER_STATUS = wrapper.is_open
 
     wrapper.is_open = False
     wrapper.window_handle = ""

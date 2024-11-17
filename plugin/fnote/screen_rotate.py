@@ -28,7 +28,12 @@ class Window:
         return f"window handle: {self.window_handle},window buffer: {self.window_buffer}\n"
 
 class WindowCycle:
-    def __init__(self):
+    def __init__(self, buffer_status):
+        if buffer_status:
+            # we close the buffer
+            # FIXME: really need to rename this command
+            vim.command(":PrintCountry")
+
         self.window_handles = self.update_windows()
         self.cycle_order = self.window_handles
 
@@ -67,7 +72,6 @@ class WindowCycle:
         vim.command('let curView = winsaveview()') 
         return vim.eval('curView')
 
-
     def cycle(self):
         # to cycle windows, we get map current_window cycle with next
         current_cycle = self.cycle_order
@@ -84,14 +88,6 @@ class WindowCycle:
 
 
 
-def cyclewindows():
-    """
-    we grab all available windows and create a cycle order
-
-    """
-    windowcycle = WindowCycle()
-    windowcycle.cycle()
-    pass
 
 
 
